@@ -1,0 +1,33 @@
+header {
+  align-content: center;
+}
+
+h1 {
+  font-family: 'Barriecito', cursive;
+  font-size: 5em;
+  text-align: center;
+}
+
+h2 {
+  font-family: 'Rubik Mono One', sans-serif;
+  font-size: 1.5em;
+  height: 50px;
+}
+
+p {
+  font-family: 'Dosis', sans-serif;
+  height: 50px;
+}
+
+img {
+  border-radius: 5px;
+}
+
+select {
+  font-size: 1em;
+  margin: 5% 40%;
+}
+
+p, img, h2 {
+  width: 250px;
+}
