@@ -16,5 +16,5 @@ Actual time needed to complete: 23 mins
 Number and name of feature: Filter images
 Estimate of time needed to complete: 80 min
 Start time: 10:05am
-Finish time: 
-Actual time needed to complete: 
+Finish time: 12:35am
+Actual time needed to complete: 2 hour and 30 mins
