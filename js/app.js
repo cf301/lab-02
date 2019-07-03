@@ -1,6 +1,7 @@
 'use strict';
 //array to hold all creatures
 const allCreatures = [];
+
 //constructor
 const Creature = function(image_url, title, description, keyword, horns) {
   this.image_url = image_url;
@@ -19,8 +20,16 @@ Creature.prototype.renderWithJQuery = function() {
   $newCreature.html(creatureTemplateHTML);
   //populate these tags
   $newCreature.find('h2').text(this.title);
+  $newCreature.find('h2').attr('id', this.title);
+
   $newCreature.find('img').attr('src', this.image_url);
+  $newCreature.find('img').attr('alt', this.keyword);
+  $newCreature.find('img').attr('width', '200');
+  $newCreature.find('img').attr('height', '200');
+
   $newCreature.find('p').text(this.description);
+  $newCreature.find('p').attr('id', this.keyword);
+
   //append
   $('main').append($newCreature);
 };
@@ -40,7 +49,6 @@ Creature.getCreaturesFromFile = function() {
     allCreatures.forEach(item => {
       //render each picture
       item.renderWithJQuery();
-      
     });
   });
 };
@@ -57,6 +65,24 @@ function populateDropDown() {
     $('select').append(o);
   });
 }
+
+//event handler on click (of select dropdown)
+$( 'select' ).on('change', function() {
+  //hide ALL images
+  $('img').hide();
+  $('h2').hide();
+  $('p').hide();
+  //iterate
+  allCreatures.forEach( item => {
+    //if keyword exactly matches CURRENT keyword
+    if(item.keyword === $(this).val()) {
+      //show only those images, h2s, and p's.
+      $(`img[alt="${item.keyword}"]`).show();
+      $(`h2[id="${item.title}"]`).show();
+      $(`p[id="${item.keyword}"]`).show();
+    }
+  });
+});
 
 $(document).ready(function () {
   //grab our creatures from file, but not until page loads
