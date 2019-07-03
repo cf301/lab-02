@@ -1,0 +1,14 @@
+section {
+  float: left;
+  margin: 30px;
+}
+
+footer {
+  clear: both;
+  position: relative;
+  padding: 5% 40%;
+}
+
+#photo-template {
+  display: none;
+}
