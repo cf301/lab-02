@@ -39,3 +39,31 @@ Creature.getCreaturesFromFile = function() {
 };
 
 Creature.getCreaturesFromFile();
+
+function populateDropDown() {
+
+  //select our dropdown object
+  var $target = $('select')[0];
+  console.log($target);
+  //populate by keyword 
+  allCreatures.forEach(function(item) {
+    //new option object in HTML
+    // var o = new Option(item.keyword, item.keyword);
+    //actual html text
+    // $(o).html(item.keyword);
+    //finding our select HTml tag, and appending our new option
+    // $('select').append(o);
+
+    const $option = $('<option>dummy text</option>');
+    // const selectTemplate = $('select').html();
+    // $option.html(selectTemplate);
+    // $option.find('option').text('hardcoded text');
+    $('select')[0].append('<option>dummy text</option>');
+  });
+
+}
+
+$(document).ready(function () {
+  //can we get an option inside the select
+  populateDropDown();
+})
