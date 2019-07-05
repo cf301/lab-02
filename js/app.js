@@ -1,7 +1,6 @@
 'use strict';
 //array to hold all creatures
 const allCreatures = [];
-let pageState = 1;
 
 //constructor
 const Creature = function(image_url, title, description, keyword, horns, page) {
@@ -13,10 +12,10 @@ const Creature = function(image_url, title, description, keyword, horns, page) {
   this.page = page;
   allCreatures.push(this);
 };
+
 //added render function
 Creature.prototype.renderWithJQuery = function() {
   const $newCreature = $('<section></section');
-
   //find our place in the DOM
   const creatureTemplateHTML = $('#photo-template').html();
   $newCreature.html(creatureTemplateHTML);
@@ -37,6 +36,18 @@ Creature.prototype.renderWithJQuery = function() {
 
   //append
   $('main').append($newCreature);
+};
+
+//this is a prototype function, are we calling it right?
+
+Creature.prototype.renderWithHandlebars = function() {
+  const source = $('#creature-template').html();
+  const template = Handlebars.compile(source);
+  
+  //was this, changed to hardcode to see if anything works
+  const newHTML = template(this);
+  //change from #photo-template
+  $('#proof').append(newHTML);
 };
 
 Creature.getCreaturesFromFile = function(filePath, page) {
@@ -61,18 +72,21 @@ Creature.getCreaturesFromFile = function(filePath, page) {
 //only render images for that page
 //TODO - still rendering page 1 + page 1 + page 2 times
 function render(page){
+  
   allCreatures.forEach(item => {
     //render each picture
     if(item.page === page){
-      item.renderWithJQuery();
+      //render here with jquery
+      //item.renderWithJQuery();
+      //render here with handlebars
+      item.renderWithHandlebars();
     }
   });
 }
 
 function populateDropDown() {
   //iterate
-  allCreatures.forEach( item => {
-    console.log( $('option').val() );
+  allCreatures.forEach( item => { 
     // if the option doesn't already exist
     if ( ! $(`select option[value= ${item.keyword}]`).length > 0 ) {
       //new option object in HTML
