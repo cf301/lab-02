@@ -1,7 +1,6 @@
 'use strict';
 //array to hold all creatures
 const allCreatures = [];
-let pageState = 1;
 
 //constructor
 const Creature = function(image_url, title, description, keyword, horns, page) {
@@ -13,10 +12,10 @@ const Creature = function(image_url, title, description, keyword, horns, page) {
   this.page = page;
   allCreatures.push(this);
 };
+
 //added render function
 Creature.prototype.renderWithJQuery = function() {
   const $newCreature = $('<section></section');
-
   //find our place in the DOM
   const creatureTemplateHTML = $('#photo-template').html();
   $newCreature.html(creatureTemplateHTML);
@@ -39,6 +38,18 @@ Creature.prototype.renderWithJQuery = function() {
   $('main').append($newCreature);
 };
 
+//this is a prototype function, are we calling it right?
+
+Creature.prototype.renderWithHandlebars = function() {
+  const source = $('#creature-template').html();
+  const template = Handlebars.compile(source);
+  
+  //was this, changed to hardcode to see if anything works
+  const newHTML = template(this);
+  //change from #photo-template
+  $('#proof').append(newHTML);
+};
+
 Creature.getCreaturesFromFile = function(filePath, page) {
   const fileType = 'json';
   //aysnc call to instantiate new creatures
@@ -58,34 +69,33 @@ Creature.getCreaturesFromFile = function(filePath, page) {
   });
 };
 
-
 //only render images for that page
+//TODO - still rendering page 1 + page 1 + page 2 times
 function render(page){
+  
   allCreatures.forEach(item => {
     //render each picture
     if(item.page === page){
-      item.renderWithJQuery();
+      //render here with jquery
+      //item.renderWithJQuery();
+      //render here with handlebars
+      item.renderWithHandlebars();
     }
   });
 }
 
 function populateDropDown() {
   //iterate
-  allCreatures.forEach( item => {
-
-    console.log('select.val()', $('select').val() );
-    console.log($('select.val(item.keyword)', 'select').val(item.keyword) );
-    //check if the option already exists before we populate
-    // if (! $('select').val(item.keyword) ){
+  allCreatures.forEach( item => { 
+    // if the option doesn't already exist
+    if ( ! $(`select option[value= ${item.keyword}]`).length > 0 ) {
       //new option object in HTML
       var o = new Option(item.keyword, item.keyword);
       //actual html text
       $(o).html(item.keyword);
       //finding our select HTml tag, and appending our new option
       $('select').append(o);
-
-    // }
-
+    }
   });
 }
 
