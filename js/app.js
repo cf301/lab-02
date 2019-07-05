@@ -50,17 +50,33 @@ Creature.getCreaturesFromFile = function(filePath, page) {
     //populate our drop down with all creatures
     populateDropDown();
     //iterate
-
+    render(page);
+    // allCreatures.forEach(item => {
+    //   //render each picture
+    //   item.renderWithJQuery();
+    // });
   });
 };
 
+
+//only render images for that page
+function render(page){
+  allCreatures.forEach(item => {
+    //render each picture
+    if(item.page === page){
+      item.renderWithJQuery();
+    }
+  });
+}
 
 function populateDropDown() {
   //iterate
   allCreatures.forEach( item => {
 
+    console.log('select.val()', $('select').val() );
+    console.log($('select.val(item.keyword)', 'select').val(item.keyword) );
     //check if the option already exists before we populate
-    if (! $('select').val(item.keyword) ){
+    // if (! $('select').val(item.keyword) ){
       //new option object in HTML
       var o = new Option(item.keyword, item.keyword);
       //actual html text
@@ -68,7 +84,7 @@ function populateDropDown() {
       //finding our select HTml tag, and appending our new option
       $('select').append(o);
 
-    }
+    // }
 
   });
 }
@@ -105,9 +121,4 @@ $(document).ready(function () {
   //default on page load to page one
   Creature.getCreaturesFromFile('/data/page-1.json', 'one');
   Creature.getCreaturesFromFile('/data/page-2.json', 'two');
-
-  allCreatures.forEach(item => {
-    //render each picture
-    item.renderWithJQuery();
-  });
 })
