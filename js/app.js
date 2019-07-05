@@ -58,8 +58,8 @@ Creature.getCreaturesFromFile = function(filePath, page) {
   });
 };
 
-
 //only render images for that page
+//TODO - still rendering page 1 + page 1 + page 2 times
 function render(page){
   allCreatures.forEach(item => {
     //render each picture
@@ -72,20 +72,16 @@ function render(page){
 function populateDropDown() {
   //iterate
   allCreatures.forEach( item => {
-
-    console.log('select.val()', $('select').val() );
-    console.log($('select.val(item.keyword)', 'select').val(item.keyword) );
-    //check if the option already exists before we populate
-    // if (! $('select').val(item.keyword) ){
+    console.log( $('option').val() );
+    // if the option doesn't already exist
+    if ( ! $(`select option[value= ${item.keyword}]`).length > 0 ) {
       //new option object in HTML
       var o = new Option(item.keyword, item.keyword);
       //actual html text
       $(o).html(item.keyword);
       //finding our select HTml tag, and appending our new option
       $('select').append(o);
-
-    // }
-
+    }
   });
 }
 
