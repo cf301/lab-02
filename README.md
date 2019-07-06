@@ -34,3 +34,11 @@ Estimate of time needed to complete: 60 min
 Start time: 3:30pm
 Finish time: 
 Actual time needed to complete: 2 hour and 20 mins
+
+### Feature 5
+
+Number and name of feature: flex
+Estimate of time needed to complete: 15 min
+Start time: 4:50pm
+Finish time: 5pm
+Actual time needed to complete: 10 mins
