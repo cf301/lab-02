@@ -3,66 +3,99 @@
 const allCreatures = [];
 
 //constructor
-const Creature = function(image_url, title, description, keyword, horns) {
+const Creature = function(image_url, title, description, keyword, horns, page) {
   this.image_url = image_url;
   this.title = title;
   this.description = description;
   this.keyword = keyword;
   this.horns = horns;
+  this.page = page;
   allCreatures.push(this);
 };
+
 //added render function
 Creature.prototype.renderWithJQuery = function() {
   const $newCreature = $('<section></section');
-
   //find our place in the DOM
   const creatureTemplateHTML = $('#photo-template').html();
   $newCreature.html(creatureTemplateHTML);
   //populate these tags
   $newCreature.find('h2').text(this.title);
   $newCreature.find('h2').attr('id', this.title);
+  $newCreature.find('h2').attr('class', this.page);
 
   $newCreature.find('img').attr('src', this.image_url);
   $newCreature.find('img').attr('alt', this.keyword);
   $newCreature.find('img').attr('width', '200');
   $newCreature.find('img').attr('height', '200');
+  $newCreature.find('img').attr('class', this.page);
 
   $newCreature.find('p').text(this.description);
   $newCreature.find('p').attr('id', this.keyword);
+  $newCreature.find('p').attr('class', this.page);
 
   //append
   $('main').append($newCreature);
 };
 
-Creature.getCreaturesFromFile = function() {
-  const filePath = 'data/page-1.json';
+//this is a prototype function, are we calling it right?
+
+Creature.prototype.renderWithHandlebars = function() {
+  const source = $('#creature-template').html();
+  const template = Handlebars.compile(source);
+  
+  //was this, changed to hardcode to see if anything works
+  const newHTML = template(this);
+  //change from #photo-template
+  $('#proof').append(newHTML);
+};
+
+Creature.getCreaturesFromFile = function(filePath, page) {
   const fileType = 'json';
   //aysnc call to instantiate new creatures
   $.get(filePath, fileType).then( creatureJSON => {
     //iterate
     creatureJSON.forEach( item => {
-      new Creature(item.image_url, item.title, item.description, item.keyword, item.horns);
+      new Creature(item.image_url, item.title, item.description, item.keyword, item.horns, page);
     });
     //populate our drop down with all creatures
     populateDropDown();
     //iterate
-    allCreatures.forEach(item => {
-      //render each picture
-      item.renderWithJQuery();
-    });
+    render(page);
+    // allCreatures.forEach(item => {
+    //   //render each picture
+    //   item.renderWithJQuery();
+    // });
   });
 };
 
+//only render images for that page
+//TODO - still rendering page 1 + page 1 + page 2 times
+function render(page){
+  
+  allCreatures.forEach(item => {
+    //render each picture
+    if(item.page === page){
+      //render here with jquery
+      //item.renderWithJQuery();
+      //render here with handlebars
+      item.renderWithHandlebars();
+    }
+  });
+}
 
 function populateDropDown() {
   //iterate
-  allCreatures.forEach( item => {
-    //new option object in HTML
-    var o = new Option(item.keyword, item.keyword);
-    //actual html text
-    $(o).html(item.keyword);
-    //finding our select HTml tag, and appending our new option
-    $('select').append(o);
+  allCreatures.forEach( item => { 
+    // if the option doesn't already exist
+    if ( ! $(`select option[value= ${item.keyword}]`).length > 0 ) {
+      //new option object in HTML
+      var o = new Option(item.keyword, item.keyword);
+      //actual html text
+      $(o).html(item.keyword);
+      //finding our select HTml tag, and appending our new option
+      $('select').append(o);
+    }
   });
 }
 
@@ -84,7 +117,18 @@ $( 'select' ).on('change', function() {
   });
 });
 
+$('#one').click(function() {
+  $('.one').show();
+  $('.two').hide();
+});
+
+$('#two').click(function() {
+  $('.two').show();
+  $('.one').hide();
+});
+
 $(document).ready(function () {
-  //grab our creatures from file, but not until page loads
-  Creature.getCreaturesFromFile();
+  //default on page load to page one
+  Creature.getCreaturesFromFile('/data/page-1.json', 'one');
+  Creature.getCreaturesFromFile('/data/page-2.json', 'two');
 })

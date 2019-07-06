@@ -1,6 +1,10 @@
 section {
-  float: left;
   margin: 30px;
+}
+div {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 footer {
