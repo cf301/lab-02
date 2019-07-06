@@ -84,9 +84,17 @@ function render(page){
   });
 }
 
+//renders all creatures for page one and page two
+function renderAll(){
+  allCreatures.forEach(item => {
+    //render here with handlebars
+    item.renderWithHandlebars();
+  });
+}
+
 function populateDropDown() {
   //iterate
-  allCreatures.forEach( item => { 
+  allCreatures.forEach( item => {
     // if the option doesn't already exist
     if ( ! $(`select option[value= ${item.keyword}]`).length > 0 ) {
       //new option object in HTML
@@ -117,18 +125,47 @@ $( 'select' ).on('change', function() {
   });
 });
 
+//show and hide by page number
 $('#one').click(function() {
   $('.one').show();
   $('.two').hide();
 });
-
 $('#two').click(function() {
   $('.two').show();
   $('.one').hide();
 });
 
+//sort functions
+const sortByAlpha = arr => arr.sort((a,b) => a.title.localeCompare(b.title) );
+
+const sortByHorn = (arr) => {
+  return arr.sort( (a,b) => a.horns-b.horns);
+};
+
+//sort functions on click
+$('#btnSortAlpha').click(function() {
+  //TODO: maybe make a second array here and save the return..if the changes don't save on all creatures, because arrays are by reference..  
+  //sort on array
+  sortByAlpha(allCreatures);
+
+  //clear html
+
+  //call our render again
+  renderAll();
+});
+
+$('#btnSortHornNum').click(function() {
+  //sort on array
+  sortByHorn(allCreatures);
+
+  //clear html
+
+  //call our render again
+  renderAll();
+});
+
 $(document).ready(function () {
   //default on page load to page one
-  Creature.getCreaturesFromFile('/data/page-1.json', 'one');
-  Creature.getCreaturesFromFile('/data/page-2.json', 'two');
+  Creature.getCreaturesFromFile('data/page-1.json', 'one');
+  Creature.getCreaturesFromFile('data/page-2.json', 'two');
 })
