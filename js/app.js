@@ -43,7 +43,7 @@ Creature.prototype.renderWithJQuery = function() {
 Creature.prototype.renderWithHandlebars = function() {
   const source = $('#creature-template').html();
   const template = Handlebars.compile(source);
-  
+
   //was this, changed to hardcode to see if anything works
   const newHTML = template(this);
   //change from #photo-template
@@ -72,7 +72,7 @@ Creature.getCreaturesFromFile = function(filePath, page) {
 //only render images for that page
 //TODO - still rendering page 1 + page 1 + page 2 times
 function render(page){
-  
+
   allCreatures.forEach(item => {
     //render each picture
     if(item.page === page){
@@ -144,11 +144,12 @@ const sortByHorn = (arr) => {
 
 //sort functions on click
 $('#btnSortAlpha').click(function() {
-  //TODO: maybe make a second array here and save the return..if the changes don't save on all creatures, because arrays are by reference..  
+  //TODO: maybe make a second array here and save the return. If the changes don't save on all creatures, because arrays are by reference.
   //sort on array
   sortByAlpha(allCreatures);
 
   //clear html
+  clearHTML();
 
   //call our render again
   renderAll();
@@ -158,11 +159,17 @@ $('#btnSortHornNum').click(function() {
   //sort on array
   sortByHorn(allCreatures);
 
-  //clear html
+  //clear html  
+  clearHTML();
 
   //call our render again
   renderAll();
 });
+
+function clearHTML() {
+  let creatureContainer = document.getElementById('proof');
+  creatureContainer.innerHTML = '';
+}
 
 $(document).ready(function () {
   //default on page load to page one
